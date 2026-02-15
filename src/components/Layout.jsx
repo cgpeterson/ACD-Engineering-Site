@@ -8,6 +8,8 @@ import {
     Radio,
     LayoutGrid
 } from 'lucide-react';
+// IMPORT THE LOGO HERE
+import logo from '../assets/logo.png';
 
 const Layout = ({ children, activeTab, setActiveTab }) => {
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -36,8 +38,13 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800 h-16 flex items-center justify-between px-4 lg:px-8 shadow-lg shadow-black/50">
                 <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 bg-orange-600 flex items-center justify-center rounded-sm shadow-[0_0_10px_rgba(234,88,12,0.5)]">
-                        <Zap className="text-black w-6 h-6" />
+                    {/* LOGO IMAGE REPLACEMENT */}
+                    <div className="w-13 h-12 flex items-center justify-center rounded-sm">
+                        <img
+                            src={logo}
+                            alt="ACD Logo"
+                            className="w-full h-full object-contain drop-shadow-[0_0_5px_rgba(234,88,12,0.5)]"
+                        />
                     </div>
                     <div>
                         <h1 className="text-lg font-bold tracking-[0.2em] text-cyan-400" style={{ textShadow: '0 0 5px rgba(34,211,238,0.5)' }}>ACD ENGINEERS</h1>
