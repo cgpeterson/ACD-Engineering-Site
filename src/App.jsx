@@ -7,6 +7,7 @@ import { TABS } from './constants/tabs';
 import MissionStatus from './pages/MissionStatus';
 import Services from './pages/Services';
 import Licenses from './pages/Licenses';
+import Projects from './pages/Projects';
 import History from './pages/History';
 import Contact from './pages/Contact';
 
@@ -33,6 +34,7 @@ const App = () => {
         switch (activeTab) {
             case TABS.SYSTEM: return <MissionStatus onNavigate={setActiveTab} />;
             case TABS.SERVICES: return <Services onNavigate={setActiveTab} />;
+            case TABS.PROJECTS: return <Projects />;
             case TABS.LICENSES: return <Licenses />;
             case TABS.HISTORY: return <History onNavigate={setActiveTab} />;
             case TABS.CONTACT: return <Contact />;

@@ -1,0 +1,12 @@
+{
+    "id": "pacific-steel",
+    "name": "Pacific Steel Recycling Plant",
+    "category": "INDUSTRIAL",
+    "location": null,
+    "size": null,
+    "year": null,
+    "client": "Pacific Steel",
+    "services": "Electrical Engineering",
+    "description": "Complete electrical design for large scale recycling site. Recycling line included a 3,000 HP medium voltage motor and controls for shredding large metal recyclables. Support building lighting and power designs including master plan for power and telecommunications.",
+    "images": []
+}

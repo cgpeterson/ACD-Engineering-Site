@@ -1,0 +1,12 @@
+{
+    "id": "unique-project-id",
+    "name": "Project Name",
+    "category": "INDUSTRIAL | COMMERCIAL | GOVERNMENT | MILITARY | RETAIL | ENTERTAINMENT | EDUCATION | RECREATION",
+    "location": "City, ST",
+    "size": "10,000 SF",
+    "year": "2024",
+    "client": "Client Name",
+    "services": "Mechanical & Electrical Engineering",
+    "description": "Brief project description.",
+    "images": []
+}
