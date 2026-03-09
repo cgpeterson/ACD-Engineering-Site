@@ -1,6 +1,7 @@
 export const TABS = {
     SYSTEM: 'SYSTEM',
     SERVICES: 'SERVICES',
+    PROJECTS: 'PROJECTS',
     LICENSES: 'LICENSES',
     HISTORY: 'HISTORY',
     CONTACT: 'CONTACT',

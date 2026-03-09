@@ -4,7 +4,8 @@ import {
     Terminal,
     Shield,
     Radio,
-    LayoutGrid
+    LayoutGrid,
+    FolderOpen
 } from 'lucide-react';
 import { TABS } from '../constants/tabs';
 import logo from '../assets/logo.png';
@@ -21,6 +22,7 @@ const formatDate = (date) => {
 const navItems = [
     { id: TABS.SYSTEM, icon: Activity, label: 'HOME' },
     { id: TABS.SERVICES, icon: LayoutGrid, label: 'SERVICES' },
+    { id: TABS.PROJECTS, icon: FolderOpen, label: 'PROJECTS' },
     { id: TABS.LICENSES, icon: Shield, label: 'LICENSES' },
     { id: TABS.HISTORY, icon: Terminal, label: 'HISTORY' },
     { id: TABS.CONTACT, icon: Radio, label: 'CONTACT' }
