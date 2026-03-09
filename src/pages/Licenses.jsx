@@ -20,6 +20,20 @@ const Licenses = () => {
     const tooltipRef = useRef(null);
 
     const [hoveredState, setHoveredState] = useState(null);
+    const [selectedState, setSelectedState] = useState(null);
+
+    const activeState = hoveredState || selectedState;
+
+    // Position tooltip over a state element (for keyboard/touch without pointer)
+    const positionTooltipAtState = (code) => {
+        if (!tooltipRef.current || !containerRef.current || !svgRef.current) return;
+        const pathEl = svgRef.current.querySelector(`[data-state="${code}"]`);
+        if (!pathEl) return;
+        const pathRect = pathEl.getBoundingClientRect();
+        const containerRect = containerRef.current.getBoundingClientRect();
+        tooltipRef.current.style.left = `${pathRect.left - containerRect.left + pathRect.width / 2}px`;
+        tooltipRef.current.style.top = `${pathRect.top - containerRect.top - 10}px`;
+    };
 
     // Direct DOM manipulation for 60fps crosshair tracking
     useEffect(() => {
@@ -27,13 +41,25 @@ const Licenses = () => {
         const svg = svgRef.current;
         if (!container || !svg) return;
 
-        const onMouseMove = (e) => {
-            const pt = svg.createSVGPoint();
+        // Reuse a single SVGPoint and cache the inverse CTM to avoid
+        // per-event allocations that create GC pressure at ~60 Hz.
+        const pt = svg.createSVGPoint();
+        let inverseCtm = null;
+
+        const updateInverseCtm = () => {
+            const ctm = svg.getScreenCTM();
+            inverseCtm = ctm ? ctm.inverse() : null;
+        };
+        updateInverseCtm();
+
+        const onPointerMove = (e) => {
+            // Only show crosshair for mouse/pen, not touch
+            if (e.pointerType === 'touch') return;
+
+            if (!inverseCtm) return;
             pt.x = e.clientX;
             pt.y = e.clientY;
-            const ctm = svg.getScreenCTM();
-            if (!ctm) return;
-            const p = pt.matrixTransform(ctm.inverse());
+            const p = pt.matrixTransform(inverseCtm);
 
             if (crosshairRef.current) crosshairRef.current.style.opacity = '1';
             if (hLineRef.current) {
@@ -57,15 +83,20 @@ const Licenses = () => {
             }
         };
 
-        const onMouseLeave = () => {
+        const onPointerLeave = () => {
             if (crosshairRef.current) crosshairRef.current.style.opacity = '0';
         };
 
-        container.addEventListener('mousemove', onMouseMove);
-        container.addEventListener('mouseleave', onMouseLeave);
+        // Invalidate cached CTM on resize/scroll (layout changes the screen transform)
+        window.addEventListener('resize', updateInverseCtm);
+        window.addEventListener('scroll', updateInverseCtm, true);
+        container.addEventListener('pointermove', onPointerMove);
+        container.addEventListener('pointerleave', onPointerLeave);
         return () => {
-            container.removeEventListener('mousemove', onMouseMove);
-            container.removeEventListener('mouseleave', onMouseLeave);
+            window.removeEventListener('resize', updateInverseCtm);
+            window.removeEventListener('scroll', updateInverseCtm, true);
+            container.removeEventListener('pointermove', onPointerMove);
+            container.removeEventListener('pointerleave', onPointerLeave);
         };
     }, []);
 
@@ -128,7 +159,8 @@ const Licenses = () => {
                         </defs>
 
                         {/* Background grid */}
-                        <rect x="-20" y="-10" width="1000" height="616" fill="url(#wg-grid)" />
+                        <rect x="-20" y="-10" width="1000" height="616" fill="url(#wg-grid)"
+                              onClick={() => setSelectedState(null)} />
 
                         {/* Corner brackets */}
                         <g stroke="var(--crt-green)" strokeWidth="1" opacity="0.2" fill="none"
@@ -142,25 +174,65 @@ const Licenses = () => {
                         {/* State paths */}
                         {Object.entries(statePaths).map(([code, path]) => {
                             const licensed = isLicensed(code);
-                            const hovered = hoveredState === code;
+                            const active = activeState === code;
                             return (
                                 <path
                                     key={code}
                                     d={path}
+                                    data-state={code}
+                                    tabIndex={licensed ? 0 : -1}
+                                    role="button"
+                                    aria-label={`${stateNames[code] || code}, ${licensed ? `Licensed since ${licenseData[code].year}` : 'Not licensed'}`}
                                     fill={licensed
-                                        ? (hovered ? 'rgba(249,115,22,0.35)' : 'rgba(0,255,65,0.3)')
-                                        : 'rgba(0,20,0,0.3)'}
+                                        ? (active ? 'rgba(249,115,22,0.35)' : 'rgba(0,255,65,0.3)')
+                                        : (active ? 'rgba(0,40,0,0.4)' : 'rgba(0,20,0,0.3)')}
                                     stroke={licensed
-                                        ? (hovered ? '#f97316' : 'var(--crt-green)')
-                                        : 'var(--crt-green-inactive)'}
-                                    strokeWidth={hovered && licensed ? '1.5' : '0.7'}
+                                        ? (active ? '#f97316' : 'var(--crt-green)')
+                                        : (active ? 'var(--crt-green-dim)' : 'var(--crt-green-inactive)')}
+                                    strokeWidth={active ? '1.5' : '0.7'}
                                     style={{
                                         transition: 'fill 0.2s, stroke 0.2s, stroke-width 0.2s',
                                         vectorEffect: 'non-scaling-stroke',
-                                        cursor: 'none'
+                                        cursor: 'none',
+                                        outline: 'none'
                                     }}
-                                    onMouseEnter={() => setHoveredState(code)}
-                                    onMouseLeave={() => setHoveredState(null)}
+                                    onPointerEnter={() => setHoveredState(code)}
+                                    onPointerLeave={() => setHoveredState(null)}
+                                    onClick={(e) => {
+                                        setSelectedState(prev => prev === code ? null : code);
+                                        if (tooltipRef.current && containerRef.current) {
+                                            const rect = containerRef.current.getBoundingClientRect();
+                                            tooltipRef.current.style.left = `${e.clientX - rect.left + 12}px`;
+                                            tooltipRef.current.style.top = `${e.clientY - rect.top + 12}px`;
+                                        }
+                                    }}
+                                    onFocus={() => {
+                                        setSelectedState(code);
+                                        positionTooltipAtState(code);
+                                    }}
+                                    onBlur={() => setSelectedState(null)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Escape') {
+                                            e.target.blur();
+                                            setSelectedState(null);
+                                        } else if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            if (selectedState === code) {
+                                                setSelectedState(null);
+                                            } else {
+                                                setSelectedState(code);
+                                                positionTooltipAtState(code);
+                                            }
+                                        } else if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            if (selectedState === code) {
+                                                setSelectedState(null);
+                                            } else {
+                                                setSelectedState(code);
+                                                positionTooltipAtState(code);
+                                            }
+                                        }
+                                    }}
                                 />
                             );
                         })}
@@ -205,37 +277,37 @@ const Licenses = () => {
                     ref={tooltipRef}
                     className="absolute z-50 pointer-events-none"
                     style={{
-                        display: hoveredState ? 'block' : 'none',
+                        display: activeState ? 'block' : 'none',
                         background: 'rgba(0,8,0,0.92)',
-                        border: `1px solid ${isLicensed(hoveredState) ? 'var(--crt-green)' : 'var(--crt-green-border)'}`,
+                        border: `1px solid ${isLicensed(activeState) ? 'var(--crt-green)' : 'var(--crt-green-border)'}`,
                         padding: '8px 12px',
-                        boxShadow: isLicensed(hoveredState)
+                        boxShadow: isLicensed(activeState)
                             ? '0 0 15px rgba(0,255,65,0.15), inset 0 0 20px rgba(0,255,65,0.05)'
                             : 'none',
                         minWidth: '180px',
                     }}
                 >
-                    {hoveredState && (
+                    {activeState && (
                         <>
                             <div className="text-[11px] font-bold tracking-[0.2em] mb-1"
                                  style={{
-                                     color: isLicensed(hoveredState) ? 'var(--crt-green)' : '#0a5a0a',
-                                     textShadow: isLicensed(hoveredState) ? '0 0 5px rgba(0,255,65,0.5)' : 'none'
+                                     color: isLicensed(activeState) ? 'var(--crt-green)' : '#0a5a0a',
+                                     textShadow: isLicensed(activeState) ? '0 0 5px rgba(0,255,65,0.5)' : 'none'
                                  }}>
-                                {(stateNames[hoveredState] || hoveredState).toUpperCase()}
+                                {(stateNames[activeState] || activeState).toUpperCase()}
                             </div>
                             <div className="text-[10px] flex justify-between pb-1 mb-1"
                                  style={{ color: 'var(--crt-green-mid)', borderBottom: '1px solid var(--crt-green-inactive)' }}>
                                 <span>STATUS</span>
-                                <span style={{ color: isLicensed(hoveredState) ? 'var(--crt-green)' : '#661a00' }}>
-                                    {isLicensed(hoveredState) ? 'AUTHORIZED' : 'NO DATA'}
+                                <span style={{ color: isLicensed(activeState) ? 'var(--crt-green)' : '#661a00' }}>
+                                    {isLicensed(activeState) ? 'AUTHORIZED' : 'NO DATA'}
                                 </span>
                             </div>
-                            {isLicensed(hoveredState) && licenseData[hoveredState] && (
+                            {isLicensed(activeState) && licenseData[activeState] && (
                                 <div className="text-[10px] flex justify-between"
                                      style={{ color: 'var(--crt-green-mid)' }}>
                                     <span>ACQUIRED</span>
-                                    <span style={{ color: 'var(--crt-green)' }}>{licenseData[hoveredState].year}</span>
+                                    <span style={{ color: 'var(--crt-green)' }}>{licenseData[activeState].year}</span>
                                 </div>
                             )}
                         </>

@@ -9,8 +9,13 @@ import {
 import { TABS } from '../constants/tabs';
 import logo from '../assets/logo.png';
 
+const pad = (n) => String(n).padStart(2, '0');
 const formatDate = (date) => {
-    return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+    const y = date.getFullYear();
+    const m = pad(date.getMonth() + 1);
+    const d = pad(date.getDate());
+    const time = `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+    return `${y}-${m}-${d} ${time}`;
 };
 
 const navItems = [
