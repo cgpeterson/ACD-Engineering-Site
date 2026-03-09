@@ -1,5 +1,3 @@
-import React from 'react';
-
 const BootSequence = () => {
     return (
         <div className="min-h-screen bg-slate-950 text-cyan-500 font-mono flex items-center justify-center p-8 relative overflow-hidden">
@@ -20,13 +18,7 @@ const BootSequence = () => {
                 </div>
             </div>
 
-            {/* Grid Background */}
-            <div className="fixed inset-0 pointer-events-none opacity-20"
-                style={{
-                    backgroundImage: 'linear-gradient(rgba(8, 145, 178, 0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(8, 145, 178, 0.1) 1px, transparent 1px)',
-                    backgroundSize: '20px 20px'
-                }}>
-            </div>
+            <div className="fixed inset-0 pointer-events-none opacity-20 bg-grid-pattern"></div>
         </div>
     );
 };

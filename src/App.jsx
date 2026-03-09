@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import BootSequence from './components/BootSequence';
+import { TABS } from './constants/tabs';
 
 // Pages
 import MissionStatus from './pages/MissionStatus';
@@ -13,10 +14,9 @@ import Contact from './pages/Contact';
 import './index.css';
 
 const App = () => {
-    const [activeTab, setActiveTab] = useState('SYSTEM');
+    const [activeTab, setActiveTab] = useState(TABS.SYSTEM);
     const [bootSequence, setBootSequence] = useState(true);
 
-    // Handle Boot Sequence
     useEffect(() => {
         const bootTimer = setTimeout(() => {
             setBootSequence(false);
@@ -25,19 +25,17 @@ const App = () => {
         return () => clearTimeout(bootTimer);
     }, []);
 
-    // Show boot screen if loading
     if (bootSequence) {
         return <BootSequence />;
     }
 
-    // Router Logic - NOW PASSING onNavigate PROP
     const renderContent = () => {
         switch (activeTab) {
-            case 'SYSTEM': return <MissionStatus onNavigate={setActiveTab} />;
-            case 'SERVICES': return <Services onNavigate={setActiveTab} />;
-            case 'LICENSES': return <Licenses onNavigate={setActiveTab} />;
-            case 'HISTORY': return <History onNavigate={setActiveTab} />;
-            case 'CONTACT': return <Contact />;
+            case TABS.SYSTEM: return <MissionStatus onNavigate={setActiveTab} />;
+            case TABS.SERVICES: return <Services onNavigate={setActiveTab} />;
+            case TABS.LICENSES: return <Licenses />;
+            case TABS.HISTORY: return <History onNavigate={setActiveTab} />;
+            case TABS.CONTACT: return <Contact />;
             default: return <MissionStatus onNavigate={setActiveTab} />;
         }
     };

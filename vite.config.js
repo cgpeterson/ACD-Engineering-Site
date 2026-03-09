@@ -2,8 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
     plugins: [react()],
-    // Update base to match your repository name "ACD-Engineering-Site"
-    base: '/ACD-Engineering-Site/',
-})
+    // Only apply base path for GitHub Pages in production builds
+    base: mode === 'production' ? '/ACD-Engineering-Site/' : '/',
+}))

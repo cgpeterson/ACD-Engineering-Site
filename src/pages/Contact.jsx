@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Radio, Zap, CheckCircle, Loader } from 'lucide-react';
 
 const Contact = () => {
@@ -17,14 +17,14 @@ const Contact = () => {
     };
 
     return (
-        <div className="max-w-xl mx-auto animate-in zoom-in-95 duration-300 h-full flex items-center justify-center">
+        <div className="max-w-xl mx-auto h-full flex items-center justify-center">
             <div className="bg-slate-900 border border-slate-700 p-2 w-full shadow-2xl relative">
                 <div className="bg-slate-950 p-8 border border-slate-800 relative overflow-hidden min-h-[500px] flex flex-col justify-center">
                     {/* Background Effects */}
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-900/10 to-transparent h-4 animate-scan pointer-events-none"></div>
 
                     {formState === 'SENT' ? (
-                        <div className="text-center animate-in zoom-in duration-300">
+                        <div className="text-center">
                             <div className="w-20 h-20 mx-auto mb-6 bg-green-500/10 rounded-full flex items-center justify-center border border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.3)]">
                                 <CheckCircle className="w-10 h-10 text-green-500" />
                             </div>
