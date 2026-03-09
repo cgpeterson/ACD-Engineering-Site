@@ -1,9 +1,9 @@
-import React from 'react';
 import { ChevronRight } from 'lucide-react';
+import { TABS } from '../constants/tabs';
 
 const History = ({ onNavigate }) => {
     return (
-        <div className="space-y-12 animate-in fade-in duration-500 px-4">
+        <div className="space-y-12 px-4">
             <div className="relative border-l border-slate-700 ml-4 pl-12 pb-2">
                 {/* Timeline Node */}
                 <div className="absolute -left-[17px] top-0 w-9 h-9 bg-slate-950 border border-cyan-500 rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(6,182,212,0.3)]">
@@ -31,9 +31,9 @@ const History = ({ onNavigate }) => {
             </div>
 
             {/* Clickable Licensure Section */}
-            <div
-                onClick={() => onNavigate('LICENSES')}
-                className="relative border-l border-slate-800 ml-4 pl-12 group cursor-pointer"
+            <button
+                onClick={() => onNavigate(TABS.LICENSES)}
+                className="relative border-l border-slate-800 ml-4 pl-12 group cursor-pointer text-left w-full"
             >
                 <div className="absolute -left-[13px] top-0 w-7 h-7 bg-slate-950 border border-slate-600 group-hover:border-orange-500 rounded-full flex items-center justify-center transition-colors">
                     <div className="w-2 h-2 bg-slate-600 group-hover:bg-orange-500 rounded-full transition-colors"></div>
@@ -52,7 +52,7 @@ const History = ({ onNavigate }) => {
                 <div className="mt-4 text-[10px] text-cyan-500 opacity-0 group-hover:opacity-100 transition-opacity uppercase tracking-widest">
                     View Active Zones &gt;
                 </div>
-            </div>
+            </button>
         </div>
     );
 };

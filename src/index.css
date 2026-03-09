@@ -6,6 +6,12 @@
 
 :root {
     --font-tech: 'Share Tech Mono', monospace;
+    --crt-green: #00ff41;
+    --crt-green-mid: #00882a;
+    --crt-green-dim: #005a15;
+    --crt-green-border: #0a3a0a;
+    --crt-green-inactive: #0a2a0a;
+    --crt-bg: #000a00;
 }
 
 body {
@@ -29,9 +35,9 @@ body {
     border-radius: 4px;
 }
 
-    ::-webkit-scrollbar-thumb:hover {
-        background: #f97316; /* Orange hover */
-    }
+::-webkit-scrollbar-thumb:hover {
+    background: #f97316; /* Orange hover */
+}
 
 /* Animations */
 @keyframes progress {

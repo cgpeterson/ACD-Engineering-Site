@@ -1,15 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
-    Zap,
     Activity,
-    Globe,
     Terminal,
     Shield,
     Radio,
     LayoutGrid
 } from 'lucide-react';
-// IMPORT THE LOGO HERE
+import { TABS } from '../constants/tabs';
 import logo from '../assets/logo.png';
+
+const formatDate = (date) => {
+    return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
+};
+
+const navItems = [
+    { id: TABS.SYSTEM, icon: Activity, label: 'HOME' },
+    { id: TABS.SERVICES, icon: LayoutGrid, label: 'SERVICES' },
+    { id: TABS.LICENSES, icon: Shield, label: 'LICENSES' },
+    { id: TABS.HISTORY, icon: Terminal, label: 'HISTORY' },
+    { id: TABS.CONTACT, icon: Radio, label: 'CONTACT' }
+];
 
 const Layout = ({ children, activeTab, setActiveTab }) => {
     const [currentTime, setCurrentTime] = useState(new Date());
@@ -19,18 +29,6 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
         return () => clearInterval(timer);
     }, []);
 
-    const formatDate = (date) => {
-        return date.toISOString().split('T')[0] + ' ' + date.toTimeString().split(' ')[0];
-    };
-
-    const navItems = [
-        { id: 'SYSTEM', icon: Activity, label: 'HOME' },
-        { id: 'SERVICES', icon: LayoutGrid, label: 'SERVICES' },
-        { id: 'LICENSES', icon: Shield, label: 'LICENSES' },
-        { id: 'HISTORY', icon: Terminal, label: 'HISTORY' },
-        { id: 'CONTACT', icon: Radio, label: 'CONTACT' }
-    ];
-
     return (
         <div className="min-h-screen bg-slate-950 text-slate-300 selection:bg-cyan-900 selection:text-cyan-100 overflow-x-hidden relative flex flex-col">
             <div className="fixed inset-0 pointer-events-none z-0 opacity-20 bg-grid-pattern"></div>
@@ -38,7 +36,6 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/90 backdrop-blur border-b border-slate-800 h-16 flex items-center justify-between px-4 lg:px-8 shadow-lg shadow-black/50">
                 <div className="flex items-center gap-4">
-                    {/* LOGO IMAGE REPLACEMENT */}
                     <div className="w-13 h-12 flex items-center justify-center rounded-sm">
                         <img
                             src={logo}
@@ -113,7 +110,7 @@ const Layout = ({ children, activeTab, setActiveTab }) => {
                     <span className="hidden md:inline">MEM_USAGE: 14%</span>
                 </div>
                 <div className="flex gap-6">
-                    <span>© 2026 ACD ENGINEERS</span>
+                    <span>&copy; 2026 ACD ENGINEERS</span>
                 </div>
             </footer>
         </div>

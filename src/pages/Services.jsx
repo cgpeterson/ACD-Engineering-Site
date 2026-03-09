@@ -1,24 +1,24 @@
-import React from 'react';
 import { Crosshair } from 'lucide-react';
+import { TABS } from '../constants/tabs';
+
+const serviceList = [
+    "Integrated design with owner reps",
+    "Complete 'design build' planning",
+    "Energy use estimation & utility costs",
+    "Detailed engineering fee proposals",
+    "Bid and construction cost estimates",
+    "Field investigation with reports",
+    "Complete contract documents",
+    "Construction observation & punch lists",
+    "Bid and Contractor assistance",
+    "Energy code documentation (HVAC/Elec)",
+    "LEED consulting and documentation",
+    "Direct advertising & project management"
+];
 
 const Services = ({ onNavigate }) => {
-    const serviceList = [
-        "Integrated design with owner reps",
-        "Complete 'design build' planning",
-        "Energy use estimation & utility costs",
-        "Detailed engineering fee proposals",
-        "Bid and construction cost estimates",
-        "Field investigation with reports",
-        "Complete contract documents",
-        "Construction observation & punch lists",
-        "Bid and Contractor assistance",
-        "Energy code documentation (HVAC/Elec)",
-        "LEED consulting and documentation",
-        "Direct advertising & project management"
-    ];
-
     return (
-        <div className="animate-in fade-in zoom-in-95 duration-300">
+        <div>
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-800">
                 <div>
                     <h2 className="text-2xl text-white tracking-widest mb-1">ACTIVE MODULES</h2>
@@ -31,10 +31,10 @@ const Services = ({ onNavigate }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {serviceList.map((service, idx) => (
-                    <div
-                        key={idx}
-                        onClick={() => onNavigate('CONTACT')}
-                        className="relative group p-4 border border-slate-800 bg-slate-950/40 hover:bg-slate-800/60 hover:border-cyan-500/30 transition-all overflow-hidden cursor-pointer"
+                    <button
+                        key={service}
+                        onClick={() => onNavigate(TABS.CONTACT)}
+                        className="relative group p-4 border border-slate-800 bg-slate-950/40 hover:bg-slate-800/60 hover:border-cyan-500/30 transition-all overflow-hidden cursor-pointer text-left"
                     >
                         <div className="absolute top-0 right-0 p-2 opacity-30 group-hover:opacity-100 transition-opacity">
                             <Crosshair className="w-4 h-4 text-cyan-500" />
@@ -44,7 +44,7 @@ const Services = ({ onNavigate }) => {
 
                         {/* Decorative lines */}
                         <div className="absolute bottom-0 left-0 w-1 h-0 bg-orange-500 group-hover:h-full transition-all duration-300"></div>
-                    </div>
+                    </button>
                 ))}
             </div>
         </div>

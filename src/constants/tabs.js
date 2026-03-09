@@ -1,0 +1,7 @@
+export const TABS = {
+    SYSTEM: 'SYSTEM',
+    SERVICES: 'SERVICES',
+    LICENSES: 'LICENSES',
+    HISTORY: 'HISTORY',
+    CONTACT: 'CONTACT',
+};
