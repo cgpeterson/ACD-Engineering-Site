@@ -14,6 +14,7 @@ import {
     ArrowUpDown,
 } from 'lucide-react';
 import projectsData from '../data/projectsData';
+import stateNames from '../data/stateNames';
 import ConstructionTape from '../components/ConstructionTape';
 
 const categoryColors = {
@@ -228,7 +229,7 @@ const ExpandedDetail = ({ project }) => {
     );
 };
 
-const Projects = () => {
+const Projects = ({ locationFilter, clearLocationFilter }) => {
     const [openId, setOpenId] = useState(null);
     const [search, setSearch] = useState('');
     const [sortKey, setSortKey] = useState(null);
@@ -250,13 +251,21 @@ const Projects = () => {
         setSortKey(null);
         setSortDir('asc');
         setActiveFilters({});
+        if (clearLocationFilter) clearLocationFilter();
     };
 
     const hasActiveFilters = Object.values(activeFilters).some((v) => v.length > 0);
-    const hasAnyFilter = search || sortKey || hasActiveFilters;
+    const hasAnyFilter = search || sortKey || hasActiveFilters || locationFilter;
 
     const filtered = useMemo(() => {
         let data = [...projectsData];
+
+        // State filter from Licenses map
+        if (locationFilter) {
+            data = data.filter((p) =>
+                p.location && p.location.split(/[\s,&]+/).includes(locationFilter)
+            );
+        }
 
         // Search
         if (search) {
@@ -289,7 +298,7 @@ const Projects = () => {
         }
 
         return data;
-    }, [search, sortKey, sortDir, activeFilters]);
+    }, [search, sortKey, sortDir, activeFilters, locationFilter]);
 
     return (
         <div className="relative overflow-hidden -m-6 p-6 lg:-m-8 lg:p-8">
@@ -333,6 +342,21 @@ const Projects = () => {
                     </button>
                 )}
             </div>
+
+            {/* State filter pill */}
+            {locationFilter && (
+                <div className="flex items-center gap-2 mb-4">
+                    <MapPin className="w-3.5 h-3.5 text-orange-500" />
+                    <span className="text-[10px] text-slate-600 tracking-widest font-bold">STATE:</span>
+                    <button
+                        onClick={() => clearLocationFilter && clearLocationFilter()}
+                        className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-orange-400 bg-orange-500/10 border border-orange-500/20 px-2 py-1 hover:bg-orange-500/20 transition-colors cursor-pointer"
+                    >
+                        {stateNames[locationFilter] || locationFilter}
+                        <X className="w-3 h-3" />
+                    </button>
+                </div>
+            )}
 
             {/* Active filter pills */}
             {hasActiveFilters && (

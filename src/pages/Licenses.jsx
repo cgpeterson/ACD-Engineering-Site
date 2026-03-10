@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Shield } from 'lucide-react';
-import stateNames from '../data/stateNames';
 import licenseData from '../data/licenseData';
+import stateNames from '../data/stateNames';
 import statePaths from '../data/statePaths';
 
 const licensedStates = Object.entries(licenseData)
@@ -9,7 +9,7 @@ const licensedStates = Object.entries(licenseData)
 const licensedCount = licensedStates.length;
 const isLicensed = (code) => !!licenseData[code];
 
-const Licenses = () => {
+const Licenses = ({ onStateSelect }) => {
     const svgRef = useRef(null);
     const containerRef = useRef(null);
     const crosshairRef = useRef(null);
@@ -18,6 +18,7 @@ const Licenses = () => {
     const reticleRef = useRef(null);
     const coordTextRef = useRef(null);
     const tooltipRef = useRef(null);
+    const lastPointerType = useRef('mouse');
 
     const [hoveredState, setHoveredState] = useState(null);
     const [selectedState, setSelectedState] = useState(null);
@@ -198,7 +199,12 @@ const Licenses = () => {
                                     }}
                                     onPointerEnter={() => setHoveredState(code)}
                                     onPointerLeave={() => setHoveredState(null)}
+                                    onPointerDown={(e) => { lastPointerType.current = e.pointerType; }}
                                     onClick={(e) => {
+                                        if (lastPointerType.current !== 'touch' && licensed && onStateSelect) {
+                                            onStateSelect(code);
+                                            return;
+                                        }
                                         setSelectedState(prev => prev === code ? null : code);
                                         if (tooltipRef.current && containerRef.current) {
                                             const rect = containerRef.current.getBoundingClientRect();
@@ -217,15 +223,9 @@ const Licenses = () => {
                                             setSelectedState(null);
                                         } else if (e.key === 'Enter' || e.key === ' ') {
                                             e.preventDefault();
-                                            if (selectedState === code) {
-                                                setSelectedState(null);
-                                            } else {
-                                                setSelectedState(code);
-                                                positionTooltipAtState(code);
-                                            }
-                                        } else if (e.key === 'Enter' || e.key === ' ') {
-                                            e.preventDefault();
-                                            if (selectedState === code) {
+                                            if (licensed && onStateSelect) {
+                                                onStateSelect(code);
+                                            } else if (selectedState === code) {
                                                 setSelectedState(null);
                                             } else {
                                                 setSelectedState(code);
@@ -304,11 +304,17 @@ const Licenses = () => {
                                 </span>
                             </div>
                             {isLicensed(activeState) && licenseData[activeState] && (
-                                <div className="text-[10px] flex justify-between"
-                                     style={{ color: 'var(--crt-green-mid)' }}>
-                                    <span>ACQUIRED</span>
-                                    <span style={{ color: 'var(--crt-green)' }}>{licenseData[activeState].year}</span>
-                                </div>
+                                <>
+                                    <div className="text-[10px] flex justify-between"
+                                         style={{ color: 'var(--crt-green-mid)' }}>
+                                        <span>ACQUIRED</span>
+                                        <span style={{ color: 'var(--crt-green)' }}>{licenseData[activeState].year}</span>
+                                    </div>
+                                    <div className="text-[9px] mt-1.5 pt-1 text-center tracking-widest hidden md:block"
+                                         style={{ color: 'var(--crt-green-dim)', borderTop: '1px solid var(--crt-green-inactive)' }}>
+                                        CLICK TO VIEW PROJECTS
+                                    </div>
+                                </>
                             )}
                         </>
                     )}
@@ -347,9 +353,10 @@ const Licenses = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {licensedStates.map(([code, data], idx) => (
-                        <div
+                        <button
                             key={code}
-                            className="relative group p-4 border border-slate-800 bg-slate-950/40 hover:bg-slate-800/60 hover:border-cyan-500/30 transition-all overflow-hidden"
+                            onClick={() => onStateSelect && onStateSelect(code)}
+                            className="relative group p-4 border border-slate-800 bg-slate-950/40 hover:bg-slate-800/60 hover:border-cyan-500/30 transition-all overflow-hidden text-left cursor-pointer"
                         >
                             <div className="absolute top-0 right-0 p-2 opacity-30 group-hover:opacity-100 transition-opacity">
                                 <Shield className="w-4 h-4 text-cyan-500" />
@@ -359,7 +366,7 @@ const Licenses = () => {
                             <div className="text-[10px] text-slate-500 mt-1 tracking-wider">LICENSED SINCE {data.year}</div>
 
                             <div className="absolute bottom-0 left-0 w-1 h-0 bg-cyan-500 group-hover:h-full transition-all duration-300"></div>
-                        </div>
+                        </button>
                     ))}
                 </div>
             </div>
