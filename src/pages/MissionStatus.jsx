@@ -1,5 +1,16 @@
 import { Cpu, Globe, Aperture, Terminal, Zap, ChevronRight } from 'lucide-react';
 import { TABS } from '../constants/tabs';
+import projectsData from '../data/projectsData';
+
+const getLatestYear = (yearStr) => {
+    if (!yearStr) return 0;
+    const matches = yearStr.match(/\d{4}/g);
+    return matches ? Math.max(...matches.map(Number)) : 0;
+};
+
+const recentProjects = [...projectsData]
+    .sort((a, b) => getLatestYear(b.year) - getLatestYear(a.year))
+    .slice(0, 5);
 
 const MissionStatus = ({ onNavigate }) => {
     return (
@@ -61,22 +72,25 @@ const MissionStatus = ({ onNavigate }) => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Services Link List */}
                 <button
-                    onClick={() => onNavigate(TABS.SERVICES)}
+                    onClick={() => onNavigate(TABS.PROJECTS)}
                     className="border-t-2 border-orange-500 bg-slate-900/30 p-6 relative group cursor-pointer hover:bg-slate-900/50 transition-colors text-left"
                 >
-                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-orange-500 text-xs tracking-widest">VIEW ALL MODULES &gt;</div>
+                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity text-orange-500 text-xs tracking-widest">VIEW ALL PROJECTS &gt;</div>
                     <h3 className="text-sm font-bold text-orange-500 mb-4 flex items-center gap-2 tracking-wider">
                         <Terminal className="w-4 h-4" /> RECENT DIRECTIVES
                     </h3>
-                    <ul className="space-y-4 text-sm text-slate-400">
-                        <li className="flex items-start gap-3 group/item">
-                            <span className="text-cyan-500 mt-1 group-hover/item:translate-x-1 transition-transform">&gt;</span>
-                            <span>Integrated design with owner representatives during all processes of due diligence.</span>
-                        </li>
-                        <li className="flex items-start gap-3 group/item">
-                            <span className="text-cyan-500 mt-1 group-hover/item:translate-x-1 transition-transform">&gt;</span>
-                            <span>Energy use estimation for building designs and utility costs.</span>
-                        </li>
+                    <ul className="space-y-3 text-sm text-slate-400">
+                        {recentProjects.map((project) => (
+                            <li key={project.id} className="flex items-start gap-3 group/item">
+                                <span className="text-cyan-500 mt-0.5 group-hover/item:translate-x-1 transition-transform">&gt;</span>
+                                <div>
+                                    <span className="text-slate-300">{project.name}</span>
+                                    {project.location && (
+                                        <span className="text-slate-600 text-xs ml-2">// {project.location}</span>
+                                    )}
+                                </div>
+                            </li>
+                        ))}
                     </ul>
                 </button>
 

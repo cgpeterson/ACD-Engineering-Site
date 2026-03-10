@@ -17,6 +17,7 @@ import './index.css';
 const App = () => {
     const [activeTab, setActiveTab] = useState(TABS.SYSTEM);
     const [bootSequence, setBootSequence] = useState(true);
+    const [locationFilter, setLocationFilter] = useState(null);
 
     useEffect(() => {
         const bootTimer = setTimeout(() => {
@@ -30,20 +31,30 @@ const App = () => {
         return <BootSequence />;
     }
 
+    const navigate = (tab) => {
+        setLocationFilter(null);
+        setActiveTab(tab);
+    };
+
+    const navigateToProjectsWithState = (stateCode) => {
+        setLocationFilter(stateCode);
+        setActiveTab(TABS.PROJECTS);
+    };
+
     const renderContent = () => {
         switch (activeTab) {
-            case TABS.SYSTEM: return <MissionStatus onNavigate={setActiveTab} />;
-            case TABS.SERVICES: return <Services onNavigate={setActiveTab} />;
-            case TABS.PROJECTS: return <Projects />;
-            case TABS.LICENSES: return <Licenses />;
-            case TABS.HISTORY: return <History onNavigate={setActiveTab} />;
+            case TABS.SYSTEM: return <MissionStatus onNavigate={navigate} />;
+            case TABS.SERVICES: return <Services onNavigate={navigate} />;
+            case TABS.PROJECTS: return <Projects locationFilter={locationFilter} clearLocationFilter={() => setLocationFilter(null)} />;
+            case TABS.LICENSES: return <Licenses onStateSelect={navigateToProjectsWithState} />;
+            case TABS.HISTORY: return <History onNavigate={navigate} />;
             case TABS.CONTACT: return <Contact />;
-            default: return <MissionStatus onNavigate={setActiveTab} />;
+            default: return <MissionStatus onNavigate={navigate} />;
         }
     };
 
     return (
-        <Layout activeTab={activeTab} setActiveTab={setActiveTab}>
+        <Layout activeTab={activeTab} setActiveTab={navigate}>
             {renderContent()}
         </Layout>
     );
