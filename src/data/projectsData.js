@@ -1,3 +1,11 @@
+// Eagerly resolve every project image so Vite hashes them and fixes up the
+// base path. Keyed by filename, e.g. img('GemPrep.png').
+const projectImages = import.meta.glob('../assets/projects/*.png', {
+    eager: true,
+    import: 'default',
+});
+const img = (file) => projectImages[`../assets/projects/${file}`];
+
 const projectsData = [
     {
         id: "9th-street-warehouse",
@@ -9,7 +17,7 @@ const projectsData = [
         client: "S-16 Corporation",
         services: "Mechanical & Electrical Engineering",
         description: "Historic downtown Boise warehouse renovation for mixed-use occupancies including offices, restaurants and retail. Sustainable design utilizing original exposed wood and concrete structure with creative solutions for exposed and concealed power, lighting and HVAC.",
-        images: [],
+        images: [img('9thStreet.png')],
     },
     {
         id: "family-mart",
@@ -21,7 +29,7 @@ const projectsData = [
         client: "Family Mart",
         services: "Electrical Engineering",
         description: "Convenience store chain across Oregon. Design includes lighting, power, low-voltage pathways for sales floor, concessions, refrigeration, gas islands and food prep kitchen.",
-        images: [],
+        images: [img('FamilyMart.png')],
     },
     {
         id: "gem-prep",
@@ -33,7 +41,7 @@ const projectsData = [
         client: "Gem Prep",
         services: "Electrical Engineering",
         description: "Two charter school campuses (North and South). Projects included lighting, power, and low-voltage pathways for cafeterias, classrooms, gymnasiums, site plans and supporting spaces.",
-        images: [],
+        images: [img('GemPrep.png')],
     },
     {
         id: "goettsche-dental",
@@ -45,7 +53,7 @@ const projectsData = [
         client: "Goettsche",
         services: "Electrical Engineering",
         description: "Full service dental office with associated task lighting, equipment connections, and laboratory. Includes a 1,600 SF martial arts studio. Full service lighting, power, low-voltage and site plan for both tenants.",
-        images: [],
+        images: [img('GoettscheDental.png')],
     },
     {
         id: "gsa-federal",
@@ -57,7 +65,7 @@ const projectsData = [
         client: "Penrose & Associates",
         services: "Mechanical & Electrical Engineering",
         description: "Dual project buildings housing U.S. Forestry, U.S. Social Security, and U.S. Immigration and Naturalization offices. Two-pipe water source heat pump systems, energy-saving fluorescent lighting, addressable fire alarm, security and fire sprinkler systems.",
-        images: [],
+        images: [img('GSAFederal.png')],
     },
     {
         id: "iang-c130",
@@ -69,7 +77,7 @@ const projectsData = [
         client: "Idaho Air National Guard",
         services: "Mechanical & Electrical Engineering",
         description: "Interim maintenance hangar for C-130 aircraft with a fabric exterior structure. Heated with natural gas direct-fired radiant heating. Electrical systems included 24 Volt DC power and a 400 Hz generator. Still in use at Gowen Field Base.",
-        images: [],
+        images: [img('IANGHanger.png')],
     },
     {
         id: "idaho-ice-world",
@@ -81,7 +89,7 @@ const projectsData = [
         client: "S-16 Corp.",
         services: "Mechanical & Electrical Engineering",
         description: "Two ice skating rinks and auxiliary shop supporting Treasure Valley hockey leagues and public recreation. Includes restaurants, shops and arcade. All disciplines coordinated closely with owner, equipment vendors and contractors.",
-        images: [],
+        images: [img('IdahoIceWorld.png')],
     },
     {
         id: "morrison-foundation",
@@ -93,7 +101,7 @@ const projectsData = [
         client: "Morrison Foundation",
         services: "Mechanical & Electrical Engineering",
         description: "Upper-end commercial offices including Morrison Foundation headquarters. High quality wall treatments, floor coverings and interior finishes required continuous attention to detail to maintain the architect's vision throughout the building.",
-        images: [],
+        images: [img('MorrisonFoundation.png')],
     },
     {
         id: "movie-theaters",
@@ -105,7 +113,7 @@ const projectsData = [
         client: "ESI / Edwards Theaters",
         services: "Mechanical & Electrical Engineering",
         description: "Edwards, Cineplex-Odeon and other independent movie houses. Value-engineered the design and construction of entire buildings \u2014 the electrical budget alone was reduced by $600,000 while retaining design integrity. Over 5 multiplexes in Idaho.",
-        images: [],
+        images: [img('MovieTheaters.png')],
     },
     {
         id: "nestle-waters",
@@ -117,7 +125,7 @@ const projectsData = [
         client: "Nestle Waters",
         services: "Mechanical & Electrical Engineering",
         description: "Design-build mechanical and electrical engineering for this bottling facility. Designed for LEED NC2.2 Silver Certification with the owner pursuing LEED Gold. LEED consulting services provided to achieve thermal comfort credits by adding mechanical cooling to Blow Mold areas.",
-        images: [],
+        images: [img('NestleWaters.png')],
     },
     {
         id: "on-semi",
@@ -129,7 +137,7 @@ const projectsData = [
         client: "ON Semiconductor",
         services: "Electrical Engineering",
         description: "Fast-paced semiconductor manufacturer. Performed multiple tools retrofits, internal additions and upgrades to support high-paced development of automotive safety systems. Coordination included existing electrical and low-voltage systems.",
-        images: [],
+        images: [img('ONSemi.png')],
     },
     {
         id: "pacific-steel",
@@ -141,7 +149,7 @@ const projectsData = [
         client: "Pacific Steel",
         services: "Electrical Engineering",
         description: "Complete electrical design for large scale recycling site. Recycling line included a 3,000 HP medium voltage motor and controls for shredding large metal recyclables. Support building lighting and power designs including master plan for power and telecommunications.",
-        images: [],
+        images: [img('PacificSteel.png')],
     },
     {
         id: "peterbilt",
@@ -153,7 +161,7 @@ const projectsData = [
         client: "Peterbilt",
         services: "Electrical Engineering",
         description: "Sales office and shop facility. Electrical design included lighting, power and low-voltage pathways. Site included large parking area with luminaires designed for semi-tractor/trailer ease of use.",
-        images: [],
+        images: [img('PeterbiltOffice.png')],
     },
     {
         id: "simplot",
@@ -165,7 +173,7 @@ const projectsData = [
         client: "Simplot",
         services: "Electrical Engineering",
         description: "Medium voltage loop design from N-NE Road and Wheeler Rd NE with SEL protective relays and reclosers at the location of demarc. Distribution switches, fuses and transformers were provided as part of the project.",
-        images: [],
+        images: [img('Simplot.png')],
     },
     {
         id: "usps",
@@ -177,7 +185,7 @@ const projectsData = [
         client: "U.S. Postal Service",
         services: "Mechanical & Electrical Engineering",
         description: "State-of-the-art regional sorting facilities with large shipping/receiving areas, offices, security and support rooms. Each facility features dedicated computer rooms, flexible telecommunications networks, badge identification and surveillance systems. Locations include New Orleans (600K SF), Portland (450K SF), Boise (276K SF), Spokane (357K SF), Daly City (253K SF), and Greensboro (460K SF).",
-        images: [],
+        images: [img('USPSCenter.png')],
     },
     {
         id: "walgreens",
@@ -189,7 +197,7 @@ const projectsData = [
         client: "Walgreens",
         services: "Mechanical & Electrical Engineering",
         description: "Multiple store locations across the Northwest U.S. Quick turnaround on short construction schedules, coordinating all disciplines before and during construction to ensure site work and building construction proceeded smoothly.",
-        images: [],
+        images: [img('Walgreens.png')],
     },
     {
         id: "whiteman-industries",
@@ -201,7 +209,7 @@ const projectsData = [
         client: "Whiteman Industries",
         services: "Mechanical & Electrical Engineering",
         description: "New manufacturing facility with office and support spaces, built for future expansion. Buss duct installation over each production line for easy equipment changes. HVAC tailored to manufacturing floor with night setback and high efficiency heaters to reduce operating costs.",
-        images: [],
+        images: [img('WhitemanIndustries.png')],
     },
     {
         id: "winco-foods",
@@ -213,7 +221,7 @@ const projectsData = [
         client: "WinCo Foods",
         services: "Mechanical & Electrical Engineering",
         description: "Nearly 10 years of mechanical and electrical design across more than 30 WinCo Foods stores. Created innovative design solutions enabling WinCo to build faster, construct more efficiently, and increase their market share in the competitive grocery business.",
-        images: [],
+        images: [img('WinCoFoods.png')],
     },
     {
         id: "zoroco",
@@ -225,7 +233,7 @@ const projectsData = [
         client: "Zoroco",
         services: "Electrical Engineering",
         description: "Freezer addition to the existing facility including a process blast freezer. Electrical service was added with capacity for future expansion and process equipment. Project included floor heat, lighting, controls, and power.",
-        images: [],
+        images: [img('ZorocoFreezer.png')],
     },
 ];
 
