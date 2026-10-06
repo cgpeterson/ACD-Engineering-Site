@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint Backup Privacy Policy</title>
+    <meta name="description" content="How the Mint Backup Windows app handles your data and your Google Drive access.">
+    <link rel="stylesheet" href="/mint-backup/mint-backup.css">
+</head>
+<body>
+<main>
+    <p class="brand"><a href="/mint-backup/" style="text-decoration:none">Mint Backup</a></p>
+    <h1>Privacy Policy</h1>
+    <p class="lede">Effective October 6, 2026</p>
+
+    <div class="panel">
+        <strong>The short version:</strong> Mint Backup copies one folder from your computer into storage you own.
+        Your backup is encrypted on your computer before it leaves. We do not run servers that receive your files,
+        we cannot read your backups, and we never sell or share your data.
+    </div>
+
+    <h2>What Mint Backup is</h2>
+    <p>
+        Mint Backup is a Windows application that automatically backs up a folder you choose to a location you
+        choose: Google Drive, Microsoft OneDrive, Dropbox, or a local or external drive. Everything runs on your
+        computer.
+    </p>
+
+    <h2>Data the app handles</h2>
+    <ul>
+        <li>
+            <strong>Your files.</strong> The contents of the folder you choose are read on your computer, compressed,
+            encrypted (AES-256) and written to your chosen backup location. The encryption key stays on your computer
+            and with the person who set up the app for you; it is never sent to us.
+        </li>
+        <li>
+            <strong>Sign-in tokens.</strong> When you connect a cloud account, the access token from that provider is
+            stored on your computer, protected by Windows' built-in encryption. It is used only to read and write your
+            backup.
+        </li>
+        <li>
+            <strong>Search index and logs.</strong> To let you search your backups, Mint Backup keeps an index of file
+            names and text on your computer, and a copy of that index inside your encrypted backup. Diagnostic logs stay
+            on your computer.
+        </li>
+        <li>
+            <strong>Backup status signal (optional).</strong> If the person who set up Mint Backup turned on alerts,
+            the app sends a short "backup succeeded" or "backup failed" signal to a monitoring service they chose, so
+            they can be told if backups stop. This signal contains no file names or file contents; like any internet
+            request, it reveals your computer's IP address to that service.
+        </li>
+    </ul>
+
+    <h2>Google user data</h2>
+    <p>
+        If you connect Google Drive, Mint Backup requests only the
+        <code>drive.file</code> permission, which allows it to create files and access <em>only the files it has
+        created</em>. It cannot see, read, change or delete any other file in your Google Drive.
+    </p>
+    <ul>
+        <li><strong>What is accessed:</strong> the encrypted backup files Mint Backup creates in your Drive, and your Drive's storage usage so the app can warn you if space runs low.</li>
+        <li><strong>How it is used:</strong> solely to store, verify, and restore your backups, at your direction.</li>
+        <li><strong>Sharing:</strong> Google user data is not shared with, transferred to, or sold to anyone. It is not used for advertising, and it is not used to train AI or machine-learning models.</li>
+        <li><strong>Storage:</strong> backup files live in your own Google Drive. Sign-in tokens live only on your computer.</li>
+    </ul>
+    <p>
+        Mint Backup's use and transfer of information received from Google APIs adheres to the
+        <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>,
+        including the Limited Use requirements.
+    </p>
+
+    <h2>What we do not do</h2>
+    <ul>
+        <li>We do not collect analytics, telemetry or usage tracking.</li>
+        <li>We do not show ads.</li>
+        <li>We do not sell, rent or share personal information.</li>
+        <li>We do not operate any server that receives your files.</li>
+    </ul>
+
+    <h2>How long data is kept</h2>
+    <p>
+        Mint Backup keeps versions of your files for 90 days, then removes them from your backup automatically. Your
+        backup stays in your storage until you delete it.
+    </p>
+
+    <h2>Your choices</h2>
+    <ul>
+        <li>Remove Google Drive access at any time from your <a href="https://myaccount.google.com/connections">Google Account's third-party connections</a>.</li>
+        <li>Delete your backup by deleting the <em>MintBackup</em> folder from your storage.</li>
+        <li>Uninstall Mint Backup from Windows Settings &rarr; Apps; this removes the app and the data it keeps on your computer.</li>
+    </ul>
+
+    <h2>Children</h2>
+    <p>Mint Backup is not directed at children under 13 and does not knowingly collect information from them.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy changes, the updated version will be posted on this page with a new effective date.</p>
+
+    <h2>Contact</h2>
+    <p>
+        Questions about this policy or your data can go to the person who installed Mint Backup for you, or through
+        <a href="/">ACD Engineers</a>.
+    </p>
+
+    <footer>
+        Mint Backup is provided by <a href="/">ACD Engineers</a>. &middot; <a href="/mint-backup/">About Mint Backup</a>
+    </footer>
+</main>
+</body>
+</html>
